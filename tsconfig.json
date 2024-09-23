@@ -12,7 +12,9 @@
     "baseUrl": "./",
     "paths": {
       "@postgres": ["./src/postgres"],
-      "@modules": ["./src/modules"]
+      "@modules": ["./src/modules"],
+      "@utils": ["./src/utils"],
+      "@config": ["./src/config"]
     },
     "incremental": true,
     "skipLibCheck": true,

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { Movie, MovieService } from './movie.service';
 import { CreateMovieDto, UpdateMovieDto } from './dtos';
@@ -48,8 +49,8 @@ export class MovieController {
 
   // // Postgres Sql bilan CRUD
   @Get("/")
-  async getMovies(): Promise<any[]> {
-      return await this.movieService.getAllMovies();
+  async getAllMovies(@Query() queries: Record<string, string>): Promise<any[]> {
+      return await this.movieService.getAllMovies(queries);
   }
 
   @Get("/:movieId")

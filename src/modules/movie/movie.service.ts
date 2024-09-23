@@ -6,6 +6,7 @@ import {
   UpdateMovieResponse,
 } from './interfaces';
 import { PgService } from '@postgres';
+import { ApiFeatuere } from '@utils';
 
 export declare interface Movie {
   id: number;
@@ -72,10 +73,22 @@ export class MovieService {
   // }
 
   // // Postgre sql bilan CRUD
-  async getAllMovies(): Promise<any[]> {
+  async getAllMovies(queries: Record<string, string>): Promise<any> {
     // const data = await this.postgres.fetchData("SELECT * FROM movies")
     // console.log(data)
-    return await this.postgres.fetchData('SELECT * FROM movies');
+    console.log(queries)
+    const query = new ApiFeatuere("movies")
+    .paginate(+queries.page, +queries.limit)
+    .limitFields(queries?.fields ? queries.fields.split(',') : ['*'])
+    .sort("rating", "DESC")
+    .getQuery();
+    console.log(query)
+    const data = await this.postgres.fetchData(query.queryString);
+    return {
+      limit: query.limit,
+      page: query.page,
+      data,
+    };
   }
 
   async getSingleMovie(movieId: number): Promise<any> {
