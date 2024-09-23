@@ -1,18 +1,18 @@
 import { ConflictException, Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { query } from 'express';
+import { ConfigService } from '@nestjs/config';
 import { Client } from 'pg';
 
 @Injectable()
 export class PgService implements OnModuleInit, OnModuleDestroy {
   #_client: Client;
 
-  constructor() {
+  constructor(private readonly config: ConfigService) {
     this.#_client = new Client({
-      host: 'localhost',
-      port: 5432,
-      user: 'postgres',
-      password: '1234',
-      database: 'moviesite',
+      host: config.get<string>('database.host'),
+      port: config.get<number>('database.port'),
+      user: config.get<string>('database.user'),
+      password: config.get<string>('database.password'),
+      database: config.get<string>('database.dbName'),
     });
   }
 
