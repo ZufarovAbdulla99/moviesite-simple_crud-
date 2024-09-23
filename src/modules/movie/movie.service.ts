@@ -5,7 +5,7 @@ import {
   UpdateMovieRequest,
   UpdateMovieResponse,
 } from './interfaces';
-import { PgService } from 'src/postgres/pg.service';
+import { PgService } from '@postgres';
 
 export declare interface Movie {
   id: number;

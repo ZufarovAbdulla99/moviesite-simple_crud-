@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MovieModule } from './modules';
+import { MovieModule } from '@modules';
 import { ConfigModule } from '@nestjs/config';
 import dbConfig from './config/db.config';
 
