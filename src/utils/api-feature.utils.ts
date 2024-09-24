@@ -26,15 +26,37 @@ export class ApiFeatuere {
     };
   }
 
-  paginate(page: number = 1, limit: number = 10) {
+  paginate(page: number, limit: number) {
     // console.log(this.#_filterOptions.limit, this.#_filterOptions.page, "*")
-    this.#_filterOptions.limit = limit ? limit : this.#_filterOptions.limit;
-    this.#_filterOptions.page = page ? page : this.#_filterOptions.page;
+    // this.#_filterOptions.limit = limit ? limit : this.#_filterOptions.limit;
+    // this.#_filterOptions.page = page ? page : this.#_filterOptions.page;
+
+    this.#_filterOptions.limit = limit
+    this.#_filterOptions.page = page
     
     return this;
   }
 
-  filter() {}
+  filter(queries: Record<string, any>) {
+    const allQuery = {...queries}
+    const excludedFields = ["limit", "page", "sort", "fields"]
+
+    excludedFields.forEach((exf) => {
+      delete allQuery[exf]
+    })
+
+    console.log(allQuery)
+
+    this.#_filterOptions.filters = {
+      name: "= 'O'tkan kunlar",
+      rating: 'BETWEEN 3 AND 5',
+      year: "< 2000"
+    }
+
+    // {name: "Oq kema", rating: "3~5", year: "< 2000" } => `WHERE name = "Oq kema" AND rating BETWEEN 3 AND 5 AND year < 2000`
+
+    return this;
+  }
 
   limitFields(selectedFields: string[]) {
     this.#_filterOptions.fields = selectedFields;
@@ -42,7 +64,15 @@ export class ApiFeatuere {
     return this;
   }
 
-  sort(sortField: string, sortOrder: SortOrderType = 'ASC') {
+  sort(sortField: string = this.#_filterOptions.sort) {
+    let sortOrder: SortOrderType = 'ASC'
+
+    if(sortField.at(0) == '-'){
+      sortField = sortField.slice(1, sortField.length)
+      sortOrder = "DESC"
+    }
+
+    // console.log(sortField, sortOrder)
     this.#_filterOptions.sort = sortField;
     this.#_filterOptions.sortOrder = sortOrder;
 

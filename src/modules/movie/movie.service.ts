@@ -73,16 +73,19 @@ export class MovieService {
   // }
 
   // // Postgre sql bilan CRUD
-  async getAllMovies(queries: Record<string, string>): Promise<any> {
+  async getAllMovies(queries: Record<string, any>): Promise<any> {
     // const data = await this.postgres.fetchData("SELECT * FROM movies")
     // console.log(data)
-    console.log(queries)
+    // console.log(queries)
+
+    // throw new Error("Nooooo")
+
     const query = new ApiFeatuere("movies")
-    .paginate(+queries.page, +queries.limit)
+    .paginate(queries?.page || 1, queries?.limit || 10)
     .limitFields(queries?.fields ? queries.fields.split(',') : ['*'])
-    .sort("rating", "DESC")
+    .sort(queries?.sort)
     .getQuery();
-    console.log(query)
+    // console.log(query)
     const data = await this.postgres.fetchData(query.queryString);
     return {
       limit: query.limit,

@@ -3,14 +3,18 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { Movie, MovieService } from './movie.service';
 import { CreateMovieDto, UpdateMovieDto } from './dtos';
 import { CreateMovieResponse, UpdateMovieResponse } from './interfaces';
+import { ExceptionHandlerFilterr } from 'src/filters';
 
 @Controller({
   path: 'movies',
@@ -49,6 +53,8 @@ export class MovieController {
 
   // // Postgres Sql bilan CRUD
   @Get("/")
+  @HttpCode(HttpStatus.ACCEPTED)
+  @UseFilters(ExceptionHandlerFilterr)
   async getAllMovies(@Query() queries: Record<string, string>): Promise<any[]> {
       return await this.movieService.getAllMovies(queries);
   }
