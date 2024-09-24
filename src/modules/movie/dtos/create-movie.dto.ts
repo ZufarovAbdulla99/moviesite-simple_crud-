@@ -6,12 +6,12 @@ export class CreateMovieDto implements CreateMovieRequest{
     name: string;
 
     @IsNumber()
-    @Length(4, 4)
+    @Max(new Date().getFullYear())
+    @Min(1950)
     year: number;
 
     @IsNumber()
     @Min(1)
     @Max(5)
-
     rating: number;
 }
